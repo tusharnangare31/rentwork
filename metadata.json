@@ -1,0 +1,6 @@
+{
+  "name": "RentWork",
+  "description": "B2B office furniture and equipment rental marketplace with turnkey corporate orders, 256-bit secure payments, GST tax invoicing, and corporate account management in Pune.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
