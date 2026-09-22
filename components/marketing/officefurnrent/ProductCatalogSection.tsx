@@ -9,6 +9,9 @@ import {
   Search,
   Sparkles,
   Info,
+  Monitor,
+  Tv,
+  Volume2,
 } from 'lucide-react';
 import { Container } from '../../layout/container.tsx';
 import { Card, CardContent } from '../../ui/card.tsx';
@@ -18,7 +21,7 @@ import { Badge } from '../../ui/badge.tsx';
 export interface OfficeProduct {
   id: string;
   name: string;
-  category: 'chairs' | 'workstations' | 'tables' | 'storage';
+  category: 'chairs' | 'workstations' | 'tables' | 'storage' | 'electronics' | 'conference' | 'events';
   categoryLabel: string;
   tagline: string;
   description: string;
@@ -48,8 +51,8 @@ export const OFFICE_PRODUCTS: OfficeProduct[] = [
   {
     id: 'conference-table',
     name: 'Corporate Conference Table',
-    category: 'tables',
-    categoryLabel: 'Office Tables',
+    category: 'conference',
+    categoryLabel: 'Conference Equipment',
     tagline: '8 to 12 seater boardroom centerpiece',
     description: 'Large tables ideal for meetings, presentations, stakeholder discussions, and executive teamwork sessions in your corporate office.',
     rentalPriceMonthly: 2800,
@@ -85,19 +88,6 @@ export const OFFICE_PRODUCTS: OfficeProduct[] = [
     features: ['Synchronized tilting mechanism', 'Adjustable 2D armrests', 'Integrated neck & headrest'],
   },
   {
-    id: 'single-seats-workstation',
-    name: 'Single Seat Workstation',
-    category: 'workstations',
-    categoryLabel: 'Workstations',
-    tagline: 'Compact focused workstation unit',
-    description: 'Individual workstations thoughtfully designed to boost employee productivity, maintain privacy, and optimize commercial floor square footage.',
-    rentalPriceMonthly: 850,
-    minDuration: '3 Months',
-    imageUrl: 'https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=600&q=80',
-    dimensions: '3.5 ft x 2 ft x 4 ft (with screen)',
-    features: ['Acoustic fabric pinnable partition', 'Integrated wire trunking raceway', 'Heavy duty powder-coated frame'],
-  },
-  {
     id: 'cluster-workstation-4',
     name: '4-Seater Linear Cluster Workstation',
     category: 'workstations',
@@ -111,10 +101,49 @@ export const OFFICE_PRODUCTS: OfficeProduct[] = [
     features: ['Includes 4 separate work areas', 'Dual raceway for LAN & power', 'Frosted glass/fabric screen'],
   },
   {
+    id: 'single-seats-workstation',
+    name: 'Single Seat Workstation',
+    category: 'workstations',
+    categoryLabel: 'Workstations',
+    tagline: 'Compact focused workstation unit',
+    description: 'Individual workstations thoughtfully designed to boost employee productivity, maintain privacy, and optimize commercial floor square footage.',
+    rentalPriceMonthly: 850,
+    minDuration: '3 Months',
+    imageUrl: 'https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=600&q=80',
+    dimensions: '3.5 ft x 2 ft x 4 ft (with screen)',
+    features: ['Acoustic fabric pinnable partition', 'Integrated wire trunking raceway', 'Heavy duty powder-coated frame'],
+  },
+  {
+    id: 'pro-monitor-27',
+    name: '27-inch 4K IPS Business Monitor',
+    category: 'electronics',
+    categoryLabel: 'Electronics',
+    tagline: 'Crisp dual-display developer setup',
+    description: 'Ultra-thin bezel 4K UHD monitors with USB-C 65W power delivery, HDMI, DisplayPort, and height-adjustable swivel stand.',
+    rentalPriceMonthly: 750,
+    minDuration: '1 Month',
+    imageUrl: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=600&q=80',
+    dimensions: '27-inch diagonal, 16:9 aspect',
+    features: ['4K 3840x2160 IPS Panel', 'USB-C Single Cable Video & Charging', 'Low Blue Light & Flicker-Free'],
+  },
+  {
+    id: 'conference-video-bar',
+    name: '4K Boardroom Video Conference Bar',
+    category: 'conference',
+    categoryLabel: 'Conference Equipment',
+    tagline: 'Auto-framing camera & beamforming mics',
+    description: 'All-in-one Zoom Rooms and Microsoft Teams certified conference bar with 120° FOV, motorized PTZ, and acoustic echo cancellation.',
+    rentalPriceMonthly: 1950,
+    minDuration: '1 Month',
+    imageUrl: 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=600&q=80',
+    dimensions: '36" x 4" x 4"',
+    features: ['4K Ultra HD motorized lens', '6 beamforming microphone array', 'Plug & Play USB 3.0 connectivity'],
+  },
+  {
     id: 'file-cabinet',
     name: 'Lockable Steel File Cabinet',
     category: 'storage',
-    categoryLabel: 'Storage Units',
+    categoryLabel: 'Storage Solutions',
     tagline: 'Heavy-duty archival storage',
     description: 'Keep your confidential legal documents, accounting files, and office records organized and secure with high-gauge steel cabinets.',
     rentalPriceMonthly: 550,
@@ -127,7 +156,7 @@ export const OFFICE_PRODUCTS: OfficeProduct[] = [
     id: 'pedestal',
     name: '3-Drawer Mobile Under-Desk Pedestal',
     category: 'storage',
-    categoryLabel: 'Storage Units',
+    categoryLabel: 'Storage Solutions',
     tagline: 'Personal desk drawer on castors',
     description: 'Compact and sturdy mobile pedestals to neatly store laptops, personal belongings, and daily stationery within arm reach of staff.',
     rentalPriceMonthly: 300,
@@ -137,10 +166,23 @@ export const OFFICE_PRODUCTS: OfficeProduct[] = [
     features: ['Fits under standard workstations', 'Lockable top drawer', 'Smooth swivel castors with brakes'],
   },
   {
+    id: 'event-pa-system',
+    name: 'Town Hall & Event PA Audio System',
+    category: 'events',
+    categoryLabel: 'Event Equipment',
+    tagline: 'High-clarity wireless sound coverage',
+    description: 'Complete commercial event audio setup with dual powered speakers, 2 UHF wireless handheld microphones, and 8-channel mixer.',
+    rentalPriceMonthly: 2400,
+    minDuration: '1 Month',
+    imageUrl: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=600&q=80',
+    dimensions: 'Includes heavy-duty tripod speaker stands',
+    features: ['1000W Peak Active Speakers', 'Dual wireless cordless microphones', 'Bluetooth and XLR inputs'],
+  },
+  {
     id: 'stackable-chair',
-    name: 'Multi-Purpose Stackable Chair',
+    name: 'Multi-Purpose Stackable Training Chair',
     category: 'chairs',
-    categoryLabel: 'Office Chairs',
+    categoryLabel: 'Office Furniture',
     tagline: 'Space saving guest & training seating',
     description: 'Lightweight, durable, and space-saving stackable chairs that are easy to move, store efficiently, and configure for cafeteria or seminars.',
     rentalPriceMonthly: 180,
@@ -165,16 +207,31 @@ export function ProductCatalogSection({
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
 
+  React.useEffect(() => {
+    if (initialCategory) {
+      if (initialCategory === 'furniture') {
+        setSelectedCategory('chairs');
+      } else {
+        setSelectedCategory(initialCategory);
+      }
+    }
+  }, [initialCategory]);
+
   const categories = [
-    { id: 'all', label: 'All Furniture', icon: Sparkles },
-    { id: 'chairs', label: 'Office Chairs', icon: Armchair },
+    { id: 'all', label: 'All Equipment', icon: Sparkles },
+    { id: 'chairs', label: 'Office Furniture', icon: Armchair },
     { id: 'workstations', label: 'Workstations', icon: LayoutGrid },
-    { id: 'tables', label: 'Desks & Tables', icon: Table },
-    { id: 'storage', label: 'Storage Units', icon: Archive },
+    { id: 'electronics', label: 'Electronics', icon: Monitor },
+    { id: 'conference', label: 'Conference', icon: Tv },
+    { id: 'storage', label: 'Storage', icon: Archive },
+    { id: 'events', label: 'Event Equipment', icon: Volume2 },
   ];
 
   const filteredProducts = OFFICE_PRODUCTS.filter((prod) => {
-    const matchesCategory = selectedCategory === 'all' || prod.category === selectedCategory;
+    const matchesCategory =
+      selectedCategory === 'all' ||
+      prod.category === selectedCategory ||
+      (selectedCategory === 'furniture' && (prod.category === 'chairs' || prod.category === 'tables'));
     const matchesQuery =
       prod.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       prod.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -183,23 +240,23 @@ export function ProductCatalogSection({
   });
 
   return (
-    <section id="products" className="py-20 sm:py-28 bg-slate-50 border-b border-slate-200">
+    <section id="products" className="py-16 sm:py-24 bg-slate-50/70 border-b border-slate-200">
       <Container>
-        {/* Header matching officefurnrent.in */}
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <span className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 border border-amber-200 rounded-md">
-            Office Furniture Range
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto mb-10 space-y-2">
+          <span className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 border border-blue-200 rounded-md">
+            Commercial Inventory
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-            Explore Our Wide Range of Premium Office Furniture on Rent
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+            Premium Equipment &amp; Furniture on Flexible Rent
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-            From single executive cabins to 500-seat tech enterprise floors in Pune, choose fully maintained, commercial-grade furniture with fast delivery.
+          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+            From single workstations to complete tech enterprise setups in Pune. Fully serviced, insured, and delivered within 24–48 hours.
           </p>
         </div>
 
         {/* Category Filters & Search Controls */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
           {/* Category Tabs */}
           <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-white border border-slate-200 shadow-2xs">
             {categories.map((cat) => {
@@ -209,13 +266,13 @@ export function ProductCatalogSection({
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-slate-900 text-white shadow-xs'
+                      ? 'bg-blue-600 text-white shadow-xs'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-amber-400' : 'text-slate-400'}`} />
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
                   {cat.label}
                 </button>
               );
@@ -229,22 +286,22 @@ export function ProductCatalogSection({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search chairs, workstations..."
-              className="w-full pl-9 pr-3.5 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
+              placeholder="Search chairs, workstations, monitors..."
+              className="w-full pl-9 pr-3.5 py-2 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-2xs"
             />
           </div>
         </div>
 
         {/* Product Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
             <Card
               key={product.id}
-              className="flex flex-col justify-between overflow-hidden border-slate-200 hover:border-slate-300 hover:shadow-xl transition-all duration-300 group"
+              className="flex flex-col justify-between overflow-hidden border-slate-200 hover:border-slate-300 hover:shadow-xl transition-all duration-300 group bg-white rounded-2xl"
             >
               <div>
                 {/* Product Image Frame */}
-                <div className="relative h-56 w-full overflow-hidden bg-slate-100">
+                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
                   <img
                     src={product.imageUrl}
                     alt={product.name}
@@ -257,25 +314,25 @@ export function ProductCatalogSection({
                     </span>
                   </div>
                   <div className="absolute bottom-3 right-3">
-                    <span className="px-2.5 py-1 text-xs font-black bg-amber-500 text-slate-950 rounded-md shadow-sm">
+                    <span className="px-2.5 py-1 text-xs font-black bg-blue-600 text-white rounded-md shadow-xs">
                       ₹{product.rentalPriceMonthly.toLocaleString('en-IN')}{' '}
-                      <span className="text-[10px] font-medium">/ month</span>
+                      <span className="text-[10px] font-normal opacity-90">/ mo</span>
                     </span>
                   </div>
                 </div>
 
                 {/* Content */}
-                <CardContent className="p-6 space-y-3">
+                <CardContent className="p-5 space-y-2.5">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-amber-600 transition-colors">
+                    <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
                       {product.name}
                     </h3>
-                    <p className="text-xs font-semibold text-amber-700 mt-0.5">
+                    <p className="text-xs font-semibold text-blue-700 mt-0.5">
                       {product.tagline}
                     </p>
                   </div>
 
-                  <p className="text-xs text-slate-600 leading-relaxed">
+                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
                     {product.description}
                   </p>
 
@@ -284,9 +341,9 @@ export function ProductCatalogSection({
                     <div className="text-[11px] font-semibold text-slate-400">
                       📐 {product.dimensions}
                     </div>
-                    {product.features.map((feat) => (
+                    {product.features.slice(0, 2).map((feat) => (
                       <div key={feat} className="flex items-center gap-1.5 text-[11px] text-slate-600">
-                        <Check className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                        <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -295,14 +352,14 @@ export function ProductCatalogSection({
               </div>
 
               {/* Card Footer CTA */}
-              <div className="p-6 pt-0 border-t border-slate-100 flex items-center justify-between gap-2 mt-4">
+              <div className="p-5 pt-0 border-t border-slate-100 flex items-center justify-between gap-2 mt-2">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => onSelectProductForQuote(product.name)}
-                  className="text-xs font-semibold text-slate-700 hover:text-slate-950 border-slate-200 cursor-pointer"
+                  className="text-xs font-semibold text-slate-700 hover:text-slate-950 border-slate-200 cursor-pointer rounded-xl px-3 py-1.5"
                 >
-                  Quote
+                  Get Quote
                 </Button>
                 <Button
                   variant="default"
@@ -314,7 +371,7 @@ export function ProductCatalogSection({
                       onSelectProductForQuote(product.name);
                     }
                   }}
-                  className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs gap-1.5 cursor-pointer shadow-xs"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs gap-1.5 cursor-pointer shadow-xs rounded-xl px-4 py-1.5"
                 >
                   Rent Now
                   <ArrowRight className="w-3.5 h-3.5" />

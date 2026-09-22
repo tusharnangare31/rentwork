@@ -5,36 +5,44 @@
 
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from '../lib/auth/auth-context.tsx';
-import { TopContactBar } from '../components/layout/top-contact-bar.tsx';
-import { Navbar } from '../components/layout/navbar.tsx';
-import { Footer } from '../components/layout/footer.tsx';
-import { HeroSlider } from '../components/marketing/officefurnrent/HeroSlider.tsx';
-import { AboutSection } from '../components/marketing/officefurnrent/AboutSection.tsx';
+import { RentWorkNavbar } from '../components/layout/RentWorkNavbar.tsx';
+import { RentWorkFooter } from '../components/layout/RentWorkFooter.tsx';
+import { HeroSection } from '../components/marketing/rentwork/HeroSection.tsx';
+import { CategoryGrid } from '../components/marketing/rentwork/CategoryGrid.tsx';
+import { HowItWorksSection } from '../components/marketing/rentwork/HowItWorksSection.tsx';
+import { SmarterWaySection } from '../components/marketing/rentwork/SmarterWaySection.tsx';
+import { ReadyToRentBanner } from '../components/marketing/rentwork/ReadyToRentBanner.tsx';
 import {
   ProductCatalogSection,
   type OfficeProduct,
 } from '../components/marketing/officefurnrent/ProductCatalogSection.tsx';
-import { RentVsBuySection } from '../components/marketing/officefurnrent/RentVsBuySection.tsx';
 import { InstantQuoteCalculator } from '../components/marketing/officefurnrent/InstantQuoteCalculator.tsx';
 import { CoverageAreasSection } from '../components/marketing/officefurnrent/CoverageAreasSection.tsx';
 import { ContactSection } from '../components/marketing/officefurnrent/ContactSection.tsx';
 import { QuoteModal } from '../components/marketing/officefurnrent/QuoteModal.tsx';
-import { AuthModal } from '../components/shared/AuthModal.tsx';
 import { RentalOrderModal } from '../components/order/RentalOrderModal.tsx';
 import { PaymentGatewayModal } from '../components/payment/PaymentGatewayModal.tsx';
 import { OrdersDashboardModal } from '../components/order/OrdersDashboardModal.tsx';
+import { SignInView } from '../components/auth/SignInView.tsx';
+import { SignUpView } from '../components/auth/SignUpView.tsx';
+import { CustomerDashboardView } from '../components/dashboard/CustomerDashboardView.tsx';
 import {
   getStoredOrders,
   type PlacedRentalOrder,
   type OrderDeliveryAddress,
 } from '../lib/orders/order-store.ts';
 
+type AppView = 'home' | 'signin' | 'signup' | 'dashboard';
+
 function MarketplaceApp() {
   const { user, isAuthenticated } = useAuth();
 
+  // Navigation view state matching image.png (Home / Sign In / Sign Up / Dashboard)
+  const [currentView, setCurrentView] = useState<AppView>('home');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
   // Modals state
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
-  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [ordersModalOpen, setOrdersModalOpen] = useState(false);
   const [rentalOrderModalOpen, setRentalOrderModalOpen] = useState(false);
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
@@ -178,95 +186,148 @@ function MarketplaceApp() {
     setOrderCount((prev) => prev + 1);
     setPaymentModalOpen(false);
     showToast(`Order ${newOrder.orderNumber} successfully confirmed & paid! Tax invoice generated.`);
-    setOrdersModalOpen(true);
-  };
-
-  const handleExploreCategory = (category?: string) => {
-    const section = document.getElementById('products');
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
+    setCurrentView('dashboard');
   };
 
   const handleNavTo = (sectionId: string) => {
+    if (sectionId === 'home') {
+      setCurrentView('home');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (currentView !== 'home') {
+      setCurrentView('home');
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return;
+    }
     const el = document.getElementById(sectionId);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
+  // VIEW 1: SIGN IN VIEW (Top-Middle of image.png)
+  if (currentView === 'signin') {
+    return (
+      <SignInView
+        onBackToHome={() => setCurrentView('home')}
+        onSwitchToSignUp={() => setCurrentView('signup')}
+        onSuccess={() => {
+          showToast('Welcome back! Signed in to your corporate workspace.');
+          setCurrentView('dashboard');
+        }}
+      />
+    );
+  }
+
+  // VIEW 2: SIGN UP VIEW (Top-Right of image.png)
+  if (currentView === 'signup') {
+    return (
+      <SignUpView
+        onBackToHome={() => setCurrentView('home')}
+        onSwitchToSignIn={() => setCurrentView('signin')}
+        onSuccess={() => {
+          showToast('Account created! Welcome to RentWork.');
+          setCurrentView('dashboard');
+        }}
+      />
+    );
+  }
+
+  // VIEW 3: CUSTOMER DASHBOARD VIEW (Bottom-Middle of image.png)
+  if (currentView === 'dashboard') {
+    return (
+      <CustomerDashboardView
+        onBackToMarketplace={() => setCurrentView('home')}
+        onOpenProduct={(name) => handleOpenQuote(name)}
+      />
+    );
+  }
+
+  // VIEW 4: MAIN MARKETPLACE HOME VIEW (Left Column of image.png)
   return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-amber-100 selection:text-amber-900">
-      {/* Toast popup */}
+    <div className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+      {/* Toast Notification */}
       {activeToast && (
         <div className="fixed bottom-5 right-5 z-50 rounded-xl bg-slate-900 text-white px-4 py-3 shadow-xl text-xs font-medium flex items-center gap-2.5 animate-in fade-in border border-slate-700">
-          <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+          <span className="w-2 h-2 rounded-full bg-blue-400 animate-ping" />
           {activeToast}
         </div>
       )}
 
-      {/* 1. Top Contact Bar */}
-      <TopContactBar />
-
-      {/* 2. Main Sticky Navigation with real Auth & Orders trigger */}
-      <Navbar
+      {/* 1. Header / Navbar matching image.png */}
+      <RentWorkNavbar
         onNavigate={handleNavTo}
-        onGetQuoteClick={() => handleOpenQuote()}
-        onContactClick={() => handleNavTo('contact-us')}
-        onSignInClick={() => setAuthModalOpen(true)}
-        onOrdersClick={() => setOrdersModalOpen(true)}
-        orderCount={orderCount}
+        onSignInClick={() => setCurrentView('signin')}
+        onGetStartedClick={() => setCurrentView('signup')}
+        onDashboardClick={() => setCurrentView('dashboard')}
+        activeView={currentView}
       />
 
       {/* Main Content Area */}
       <main className="flex-1">
-        {/* 3. Hero Slider Banner matching officefurnrent.in */}
-        <HeroSlider
-          onGetQuoteClick={(cat) => handleOpenQuote(cat ? `Category: ${cat}` : undefined)}
-          onExploreProducts={handleExploreCategory}
+        {/* 2. Hero Section matching image.png */}
+        <HeroSection
+          onSearch={(q) => {
+            handleNavTo('products');
+          }}
+          onExplore={() => handleNavTo('products')}
         />
 
-        {/* 4. About Us & Value Proposition */}
-        <AboutSection onGetQuoteClick={() => handleOpenQuote('General Office Rental')} />
+        {/* 3. Browse by Category (6 cards) matching image.png */}
+        <CategoryGrid
+          selectedCategory={selectedCategory}
+          onSelectCategory={(catId) => {
+            setSelectedCategory(catId);
+            handleNavTo('products');
+          }}
+        />
 
-        {/* 5. Product Catalog & Inventory with Rent Now & Quote actions */}
+        {/* 4. Product Catalog with real Rent Now & Quote actions */}
         <ProductCatalogSection
+          initialCategory={selectedCategory}
           onSelectProductForQuote={(productName) => handleOpenQuote(productName)}
           onRentProduct={handleRentProduct}
         />
 
-        {/* 6. Why Rent vs Buy Comparison */}
-        <RentVsBuySection onGetQuoteClick={() => handleOpenQuote('Office Setup Package')} />
+        {/* 5. How It Works (4 Steps) matching image.png */}
+        <HowItWorksSection />
 
-        {/* 7. Instant Quote & Cost Estimator with direct online order & checkout */}
+        {/* 6. A Smarter Way to Equip Your Business (4 benefits) matching image.png */}
+        <SmarterWaySection />
+
+        {/* 7. Instant Cost Estimator for Pune Commercial Offices */}
         <InstantQuoteCalculator
           onProceedToQuote={handleCalculatorProceedQuote}
           onDirectOrder={handleDirectCalculatorOrder}
         />
 
-        {/* 8. Pune Commercial Coverage Areas */}
+        {/* 8. Ready to rent? Callout Banner matching image.png */}
+        <ReadyToRentBanner onGetStarted={() => setCurrentView('signup')} />
+
+        {/* 9. Pune Commercial Coverage Areas */}
         <CoverageAreasSection />
 
-        {/* 9. Direct Contact & Enquiry Section */}
+        {/* 10. Contact Section */}
         <ContactSection />
       </main>
 
-      {/* 10. Footer */}
-      <Footer />
+      {/* 11. Footer matching image.png */}
+      <RentWorkFooter
+        onNavigate={handleNavTo}
+        onOpenTerms={() => showToast('Terms of Service: Standard B2B leasing contract agreement.')}
+        onOpenPrivacy={() => showToast('Privacy Policy: 256-bit encrypted data protection.')}
+      />
 
-      {/* 11. Quote Modal */}
+      {/* 12. Quote Modal */}
       <QuoteModal
         isOpen={quoteModalOpen}
         onClose={() => setQuoteModalOpen(false)}
         prefilledProduct={selectedProductForQuote}
         initialData={calculatorQuoteData}
-      />
-
-      {/* 12. Corporate Auth Modal (Sign In / Register / Demo) */}
-      <AuthModal
-        isOpen={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
-        onSuccess={() => showToast('Authenticated successfully with corporate workspace!')}
       />
 
       {/* 13. Commercial Rental Order Configuration Modal */}
@@ -277,7 +338,7 @@ function MarketplaceApp() {
         onProceedToPayment={handleProceedToPayment}
       />
 
-      {/* 14. B2B Payment Gateway (UPI, NetBanking, Card, NEFT) */}
+      {/* 14. B2B Payment Gateway Modal (UPI, NetBanking, Card, NEFT) */}
       <PaymentGatewayModal
         isOpen={paymentModalOpen}
         onClose={() => setPaymentModalOpen(false)}
@@ -285,7 +346,7 @@ function MarketplaceApp() {
         onPaymentSuccess={handlePaymentSuccess}
       />
 
-      {/* 15. Customer Orders Dashboard & Active Leases Manager */}
+      {/* 15. Orders Dashboard Modal fallback */}
       <OrdersDashboardModal
         isOpen={ordersModalOpen}
         onClose={() => setOrdersModalOpen(false)}

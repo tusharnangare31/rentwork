@@ -18,12 +18,13 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   signIn: (email: string, password?: string) => Promise<{ success: boolean; error?: string }>;
+  signInWithProvider: (provider: 'google' | 'linkedin' | 'microsoft') => Promise<{ success: boolean; error?: string }>;
   signUp: (data: {
     email: string;
     password?: string;
     fullName: string;
     companyName: string;
-    phone: string;
+    phone?: string;
     gstin?: string;
   }) => Promise<{ success: boolean; error?: string }>;
   signOut: () => void;
@@ -90,11 +91,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { success: true };
   };
 
+  const signInWithProvider = async (provider: 'google' | 'linkedin' | 'microsoft'): Promise<{ success: boolean; error?: string }> => {
+    setIsLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const providerUser: AuthUser = {
+      id: `usr_${provider}_${Date.now()}`,
+      email: provider === 'google' ? 'tushar@technova.in' : provider === 'microsoft' ? 'tushar.n@technovacorp.onmicrosoft.com' : 'tushar.nangare@linkedin-corp.in',
+      fullName: 'Tushar Nangare',
+      companyName: 'TechNova Solutions Pvt Ltd',
+      phone: '+91-9960466699',
+      role: 'CUSTOMER',
+      gstin: '27AABCT3421K1ZZ',
+      address: 'EON Free Zone, Cluster C, Kharadi, Pune 411014',
+    };
+
+    setUser(providerUser);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(providerUser));
+    setIsLoading(false);
+    return { success: true };
+  };
+
   const signUp = async (data: {
     email: string;
     fullName: string;
     companyName: string;
-    phone: string;
+    phone?: string;
     gstin?: string;
   }): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
@@ -105,7 +127,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       email: data.email,
       fullName: data.fullName,
       companyName: data.companyName,
-      phone: data.phone,
+      phone: data.phone || '+91-9960466699',
       role: 'CUSTOMER',
       gstin: data.gstin || '27AABCT3421K1ZZ',
       address: 'Pune, Maharashtra',
@@ -136,6 +158,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isAuthenticated: !!user,
         isLoading,
         signIn,
+        signInWithProvider,
         signUp,
         signOut,
         updateProfile,
